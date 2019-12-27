@@ -64,7 +64,6 @@ module.exports.update = async (req, res, schema) => {
     }
     catch(e)
     {
-        console.log(e)
         res.status(400).send('Bad request')
     }
 }

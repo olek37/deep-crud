@@ -1,6 +1,4 @@
-const formatDate = (date) => {
-    return ((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))) + '-' + ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate())) + '-' + date.getFullYear()
-}
+const formatDate = (date) => ((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))) + '-' + ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate())) + '-' + date.getFullYear()
 
 const formatIfDate = (val) => {
     if(val instanceof Date) {
@@ -17,19 +15,19 @@ const inputs = (data) =>
             data.dependsOnData.find(depends => depends.name == key)
             ?
                 `
-                    <select name="${key}">
-                        <option ${data.tableData[0][key] == null ? 'selected' : ''} value="null"></option>
-                        ${
-                            data.dependsOnData.find(depends => depends.name == key).available.map(obj => {
-                                const val = Object.values(obj)[0]
-                                return `<option ${val == data.tableData[0][key] ? 'selected' : '' } value="${val}">${val}</option>`
-                            })
-                        }
-                    </select>
+                <select name="${key}">
+                    <option ${data.tableData[0][key] == null ? 'selected' : ''} value="null"></option>
+                    ${
+                        data.dependsOnData.find(depends => depends.name == key).available.map(obj => {
+                            const val = Object.values(obj)[0]
+                            return `<option ${val == data.tableData[0][key] ? 'selected' : '' } value="${val}">${val}</option>`
+                        })
+                    }
+                </select>
                 `
             :
                 `
-                    <input type="text" name="${key}" value="${formatIfDate(data.tableData[0][key])}"></input>
+                <input type="text" name="${key}" value="${formatIfDate(data.tableData[0][key])}"></input>
                 `
         }
         <br>
@@ -39,7 +37,7 @@ const inputs = (data) =>
 const formData = (data) => 
     Object.keys(data.tableData[0]).reduce((str, key) => str +
     `
-        ${key}: $("*[name='${key}']").val(),
+    ${key}: $("*[name='${key}']").val(),
     `
     , '').split(0, -1)
 

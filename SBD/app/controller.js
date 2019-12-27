@@ -61,7 +61,7 @@ module.exports.create = async (req, res, schema) => {
     try 
     {
         await sql.createData(table, req.body)
-        res.send('Data created successfully')
+        res.status(200).send('Data created successfully')
     }
     catch(e)
     {
@@ -76,7 +76,7 @@ module.exports.update = async (req, res, schema) => {
     try 
     {
         await sql.updateData(table, req.body, req.params.id)
-        res.send('Data updated successfully')
+        res.status(200).send('Data updated successfully')
     }
     catch(e)
     {
@@ -89,7 +89,7 @@ module.exports.delete = async (req, res, schema) => {
     try 
     {
         await sql.deleteData(table, req.params.id)
-        res.send('Data deleted successfully')
+        res.status(200).send('Data deleted successfully')
     }
     catch(e)
     {

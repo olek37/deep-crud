@@ -29,6 +29,37 @@
             ]
         },
         {
+            "name": "definicjeatr",
+            "fields": [
+                {
+                    "pk": true,
+                    "name": "kod",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "atrybuty",
+            "fields": [
+                {
+                    "name": "wartosc",
+                    "type": "string"
+                },
+                {
+                    "pk": true,
+                    "name": "dokument",
+                    "type": "string",
+                    "references": "dokumenty$numerpelny"
+                },
+                {
+                    "pk": true,
+                    "name": "definicja",
+                    "type": "string",
+                    "references": "definicjeatr$kod"
+                }
+            ]
+        },
+        {
             "name": "dokumenty",
             "fields": [
                 {
@@ -103,6 +134,11 @@
                 {
                     "name": "stanmagazynowy",
                     "type": "int"
+                },
+                {
+                    "name": "dostawca",
+                    "type": "string",
+                    "references": "kontrahenci$kod"
                 }
             ]
         },
@@ -128,6 +164,46 @@
                     "name": "towar",
                     "type": "string",
                     "references": "towary$kod"
+                }
+            ]
+        },
+        {
+            "name": "raporty",
+            "fields": [
+                {
+                    "pk": true,
+                    "name": "numerraportu",
+                    "type": "string"
+                },
+                {
+                    "name": "dataotwarcia",
+                    "type": "string"
+                },
+                {
+                    "name": "saldo",
+                    "type": "int"
+                }
+            ]
+        },
+        {
+            "name": "analizy",
+            "fields": [
+                {
+                    "pk": true,
+                    "name": "kod",
+                    "type": "string"
+                },
+                {
+                    "name": "zarobek",
+                    "type": "int"
+                },
+                {
+                    "name": "trend",
+                    "type": "string"
+                },
+                {
+                    "name": "najbardziejdochodowe",
+                    "type": "string"
                 }
             ]
         }

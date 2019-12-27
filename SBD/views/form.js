@@ -10,27 +10,28 @@ const formatIfDate = (val) => {
 const inputs = (data) => 
     Object.keys(data.tableData[0]).reduce((str, key) => str +
         `
-        <p>${key}</p>
-        ${
-            data.dependsOnData.find(depends => depends.name == key)
-            ?
-                `
-                <select name="${key}">
-                    <option ${data.tableData[0][key] == null ? 'selected' : ''} value="null"></option>
-                    ${
-                        data.dependsOnData.find(depends => depends.name == key).available.map(obj => {
-                            const val = Object.values(obj)[0]
-                            return `<option ${val == data.tableData[0][key] ? 'selected' : '' } value="${val}">${val}</option>`
-                        })
-                    }
-                </select>
-                `
-            :
-                `
-                <input type="text" name="${key}" value="${formatIfDate(data.tableData[0][key])}"></input>
-                `
-        }
-        <br>
+        <div class="inputs">
+            <p class="input-title">${key}</p>
+            ${
+                data.dependsOnData.find(depends => depends.name == key)
+                ?
+                    `
+                    <select name="${key}">
+                        <option ${data.tableData[0][key] == null ? 'selected' : ''} value="null"></option>
+                        ${
+                            data.dependsOnData.find(depends => depends.name == key).available.map(obj => {
+                                const val = Object.values(obj)[0]
+                                return `<option ${val == data.tableData[0][key] ? 'selected' : '' } value="${val}">${val}</option>`
+                            })
+                        }
+                    </select>
+                    `
+                :
+                    `
+                    <input type="text" name="${key}" value="${formatIfDate(data.tableData[0][key])}"></input>
+                    `
+            }
+        </div>
         `
     , '')
 
@@ -42,28 +43,28 @@ const formData = (data) =>
     , '').split(0, -1)
 
 module.exports.default = (route, data, method) => `
-    <form id="form">
-        ${
-            inputs(data)
-        }
-        <br>
-        <br>
-        <input id="submit" type="submit" value="${method}">
-    </form> 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
+    <div class="container">
+        <form id="form">
+            ${
+                inputs(data)
+            }
+            <div class="button-wrapper">
+                <a id="submit">Zapisz</a>
+            </div>
+            
+        </form>
+    </div>
     <script>
     $(document).ready(function(){
-        $("#form").submit(function(event){
+        $("#submit").on("click", function(event){
             event.preventDefault()
             const data = {${formData(data)}}
-            console.log(data)
             $.ajax({
                 url: '/${route}',
                 type: '${method.toUpperCase()}',
-                dataType: 'json',
                 data: data
-            }).done(function(response){
-                alert()
+            }).done(function(data){
+                console.log(data)
             });
         });
     });

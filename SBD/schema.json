@@ -41,6 +41,10 @@
                     "type": "date"
                 },
                 {
+                    "name": "datadodania",
+                    "type": "date"
+                },
+                {
                     "name": "konto",
                     "type": "string",
                     "references": "konta$numerkonta"

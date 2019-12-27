@@ -5,7 +5,7 @@ module.exports.default = (content) => `
     <title>Mini ERP</title>
     </head>
     <body>
-    <h1>ERP Mini</h1>
+    <h1>Mini ERP</h1>
     ${
         content
     }

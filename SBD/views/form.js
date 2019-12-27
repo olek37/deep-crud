@@ -63,7 +63,7 @@ module.exports.default = (route, data, method) => `
                 dataType: 'json',
                 data: data
             }).done(function(response){
-                console.log(response)
+                alert()
             });
         });
     });

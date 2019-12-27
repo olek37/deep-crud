@@ -9,31 +9,39 @@ const formatIfDate = (val) => {
 
 const createLink = (route, obj) => '/' + route + '/' +  Object.keys(obj).reduce((str, key) => str + `${key}$${formatIfDate(obj[key])}&`, '')
 
-module.exports.default = (data) => 
+const createListElements = (name, elements) => 
+    elements.reduce((str_, obj) => str_ +
+    `  
+    <a class="list-element" href="${createLink(name, obj)}">
+        ${
+            Object.values(obj).reduce((str__, val) => str__ + `<p>${formatIfDate(val)}</p>`)
+        }
+    </a>
     `
+    , '')
+
+const createListHeader = (list) => {
+    if(list.elements.length > 0) {
+        return Object.keys(list.elements[0]).reduce((str,key) => str + `<p>${key}</p>`)    
+    }
+}
+
+module.exports.default = (data) => `
     <div class="lists">
     ${
-        data.filter(list => list.elements.length).reduce((str, list) => str + ` 
+        data.reduce((str, list) => str + ` 
         <div class="list">
             <p>${list.name}</p>    
             <div class="list-header">
                 ${
-                    Object.keys(list.elements[0]).reduce((str,key) => str + `<p>${key}</p>`)    
+                    createListHeader(list)
                 }
             </div>
                 ${
-                    list.elements.reduce((str_, obj) => str_ +
-                    `  
-                    <a class="list-element" href="${createLink(list.name, obj)}">
-                        ${
-                            Object.values(obj).reduce((str__, val) => str__ + `<p>${formatIfDate(val)}</p>`)
-                        }
-                    </a>
-                    `
-                , '')
+                    createListElements(list.name, list.elements)
                 }
         </div>
         `, '')
     }
     </div>
-    `
+`

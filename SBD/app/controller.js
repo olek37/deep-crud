@@ -1,5 +1,5 @@
 const sql = require('./sql')
-const buildView = require('../views/builder').default
+const build = require('../views/builder')
 
 const tableByRequest = (req, schema) => schema.tables.find(table => table.name == req.url.split('/')[1])
 
@@ -26,11 +26,26 @@ const dependsOnByTable = (table) =>
             })
         )
 
+const templateObject = (table) => {
+    let obj = {}
+    table.fields.forEach(field => {
+        obj[field.name] = ''
+    })
+    return obj
+}
+
+module.exports.new = async (req, res, schema) => {
+    const table = tableByRequest(req, schema)
+    const dependsOn = dependsOnByTable(table)
+    const template= templateObject(table)
+    const data = {tableData: [template], dependsOnData: await sql.dependsOnData(dependsOn)}
+    res.send(build.new(`${table.name}`, data))
+}
 
 module.exports.read = async (req, res, schema) => {
     const table = tableByRequest(req, schema)
     const data = await sql.readData(table)
-    res.send(JSON.stringify(data))
+    res.send(build.viewList([{name: table.name, elements: data}]))
 }
 
 module.exports.readOne = async (req, res, schema) => {
@@ -38,7 +53,7 @@ module.exports.readOne = async (req, res, schema) => {
     const dependent = dependentByTable(table, schema)
     const dependsOn = dependsOnByTable(table)
     const data = await sql.readOneData(table, dependent, dependsOn, req.params.id)
-    res.send(buildView(`${table.name}/${req.params.id}`, data, 'put'))
+    res.send(build.viewOne(`${table.name}/${req.params.id}`, data))
 }
 
 module.exports.create = async (req, res, schema) => {
@@ -50,6 +65,7 @@ module.exports.create = async (req, res, schema) => {
     }
     catch(e)
     {
+        console.log(e)
         res.status(400).send('Bad request')
     }
     

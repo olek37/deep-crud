@@ -1,7 +1,6 @@
 const db = require('./db')
 
 const processInputs = (val) => {
-    console.log(val, typeof val)
     if(typeof(val) == 'string' && val != 'null') {
         return `'${val}'`
     } 
@@ -22,6 +21,18 @@ const whereClauseByPrimaryKeys = (table, id) => {
         .reduce((str, segment) => str + ` ${segment.split('$')[0]} =  '${segment.split('$')[1]}' AND`, '').slice(0, -4)
     return 'WHERE' + conditions
 }
+
+module.exports.dependsOnData = async (dependsOn) => await Promise.all(dependsOn.map(async depends => {
+    return {
+        name: depends.name,
+        available: await db.query(
+            `
+            SELECT ${depends.field}
+            FROM ${depends.table}
+            `
+        )
+    }
+}))
 
 module.exports.readData = async (table) => await db.query(`SELECT * FROM ${table.name}`)
 
@@ -46,17 +57,7 @@ module.exports.readOneData = async (table, dependent, dependsOn, id) => {
         }
     }
     ))
-    const dependsOnData = await Promise.all(dependsOn.map(async depends => {
-        return {
-            name: depends.name,
-            available: await db.query(
-                `
-                SELECT ${depends.field}
-                FROM ${depends.table}
-                `
-            )
-        }
-    }))
+    const dependsOnData = await module.exports.dependsOnData(dependsOn)
     return {tableData, dependentData, dependsOnData}
 }
 
@@ -71,7 +72,7 @@ module.exports.createData = async (table, data) => await db.query(
     VALUES 
     (
         ${
-            removeTrailingComma(Object.values(data).reduce((str, val) => str + ` ${quoteIfString(val)},`, ''))
+            removeTrailingComma(Object.values(data).reduce((str, val) => str + ` ${processInputs(val)},`, ''))
         }
     )
     `

@@ -1,0 +1,131 @@
+{
+    "tables": [
+        {
+            "name": "konta",
+            "fields": [
+                {
+                    "pk": true,
+                    "name": "numerkonta",
+                    "type": "string"
+                },
+                {
+                    "name": "saldo",
+                    "type": "int"
+                }
+            ]
+        },
+        {
+            "name": "definicjedok",
+            "fields": [
+                {
+                    "pk": true,
+                    "name": "kod",
+                    "type": "string"
+                },
+                {
+                    "name": "nazwa",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "dokumenty",
+            "fields": [
+                {
+                    "pk": true,
+                    "name": "numerpelny",
+                    "type": "string"
+                },
+                {
+                    "name": "termin",
+                    "type": "date"
+                },
+                {
+                    "name": "konto",
+                    "type": "string",
+                    "references": "konta$numerkonta"
+                },
+                {
+                    "name": "symbol",
+                    "type": "string",
+                    "references": "definicjedok$kod"
+                },
+                {
+                    "name": "kontrahent",
+                    "type": "string",
+                    "references": "kontrahenci$kod"
+                }
+            ]
+        },
+        {
+            "name": "kontrahenci",
+            "fields": [
+                {
+                    "pk": true,
+                    "name": "kod",
+                    "type": "string"
+                },
+                {
+                    "name": "nazwa",
+                    "type": "string"
+                },
+                {
+                    "name": "rodzaj",
+                    "type": "string"
+                },
+                {
+                    "name": "konto",
+                    "type": "string",
+                    "references": "konta$numerkonta"
+                },
+                {
+                    "name": "adres",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "towary",
+            "fields": [
+                {
+                    "pk": true,
+                    "name": "kod",
+                    "type": "string"
+                },
+                {
+                    "name": "nazwa",
+                    "type": "string"
+                },
+                {
+                    "name": "stanmagazynowy",
+                    "type": "int"
+                }
+            ]
+        },
+        {
+            "name": "pozycjedok",
+            "fields": [
+                {
+                    "name": "ilosc",
+                    "type": "int"
+                },
+                {
+                    "name": "cena",
+                    "type": "int"
+                },
+                {
+                    "pk": true,
+                    "name": "dokument",
+                    "type": "string",
+                    "references": "dokumenty$numerpelny"
+                },
+                {
+                    "pk": true,
+                    "name": "towar",
+                    "type": "string",
+                    "references": "towary$kod"
+                }
+            ]
+        }
+    ]
+}

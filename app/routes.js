@@ -2,6 +2,7 @@ const dispatch = require('./dispatch').default
 
 module.exports.default = (app, schema) => {
     const disp = dispatch(schema)
+    app.get('/', disp)
     schema.tables.forEach(table => {
         app.post('/' + table.name, disp)
         app.get('/' + table.name, disp)

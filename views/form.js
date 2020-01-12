@@ -64,7 +64,12 @@ module.exports.default = (route, data, method) => `
                 type: '${method.toUpperCase()}',
                 data: data
             }).done(function(data){
-                console.log(data)
+                $('#alert-info').html('<p>' + data + '</p>')
+                $('#alert-info').fadeIn(500, () => {
+                    setTimeout(function(){
+                        location.reload()
+                    }, 500);
+                });
             });
         });
     });

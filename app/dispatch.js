@@ -6,7 +6,9 @@ module.exports.default = (schema) => (req, res) => {
             controller.create(req, res, schema)
             break
         case 'GET':
-            if(req.params.id == 'new') {
+            if( req.url == '/' ) {
+                controller.home(req, res, schema)
+            } else if(req.params.id == 'new') {
                 controller.new(req, res, schema)
             } else if(req.params.id) {
                 controller.readOne(req, res, schema)

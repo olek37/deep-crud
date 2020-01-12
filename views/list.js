@@ -18,6 +18,7 @@ const createListElements = (name, elements) => elements.length > 0 ?
         ${
             Object.values(obj).reduce((str__, val) => str__ + `<p>${formatIfNull(formatIfDate(val))}</p>`, '')
         }
+        <p class="delete-button" data-link="${createLink(name, obj)}">&#10005;</p>
     </a>
     `
     , '') : ''
@@ -54,4 +55,23 @@ module.exports.default = (data) => `
         }
         </div>
     </div>
+    <script>
+    $(document).ready(function(){
+        $(".delete-button").on("click", function(event){
+            event.preventDefault()
+            event.stopPropagation()
+            $.ajax({
+                url: $(event.target).data("link"),
+                type: 'DELETE'
+            }).done(function(data){
+                $('#alert-info').html('<p>' + data + '</p>')
+                $('#alert-info').fadeIn(500, () => {
+                    setTimeout(function(){
+                        location.reload()
+                    }, 500);
+                });
+            })
+        });
+    });
+    </script>
 `

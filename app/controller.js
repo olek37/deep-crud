@@ -34,6 +34,10 @@ const templateObject = (table) => {
     return obj
 }
 
+module.exports.home = (req, res, schema) => {
+    res.send(build.home(schema.tables.map(table => table.name)))
+}
+
 module.exports.new = async (req, res, schema) => {
     const table = tableByRequest(req, schema)
     const dependsOn = dependsOnByTable(table)
@@ -61,12 +65,11 @@ module.exports.create = async (req, res, schema) => {
     try 
     {
         await sql.createData(table, req.body)
-        res.status(200).send('Data created successfully')
+        res.status(200).send('Utworzono pomyślnie!')
     }
     catch(e)
     {
-        console.log(e)
-        res.status(400).send('Bad request')
+        res.status(400).send('Błąd przy tworzeniu!')
     }
     
 }
@@ -76,11 +79,11 @@ module.exports.update = async (req, res, schema) => {
     try 
     {
         await sql.updateData(table, req.body, req.params.id)
-        res.status(200).send('Data updated successfully')
+        res.status(200).send('Zaktualizowano pomyślnie!')
     }
     catch(e)
     {
-        res.status(400).send('Bad request')
+        res.status(400).send('Błąd przy aktualizacji!')
     }
 }
 
@@ -89,10 +92,10 @@ module.exports.delete = async (req, res, schema) => {
     try 
     {
         await sql.deleteData(table, req.params.id)
-        res.status(200).send('Data deleted successfully')
+        res.status(200).send('Usunięto pomyślnie!')
     }
     catch(e)
     {
-        res.status(400).send('Bad request')
+        res.status(400).send('Błąd przy usuwaniu!')
     }
 }

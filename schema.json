@@ -11,6 +11,11 @@
                 {
                     "name": "saldo",
                     "type": "int"
+                },
+                {
+                    "name": "raport",
+                    "type": "string",
+                    "references": "raporty$numerraportu"
                 }
             ]
         },
@@ -204,6 +209,23 @@
                 {
                     "name": "najbardziejdochodowe",
                     "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "analizykont",
+            "fields": [
+                {
+                    "pk": true,
+                    "name": "analiza",
+                    "type": "string",
+                    "references": "analizy$kod"
+                },
+                {
+                    "pk": true,
+                    "name": "konto",
+                    "type": "string",
+                    "references": "konta$numerkonta"
                 }
             ]
         }

@@ -7,7 +7,9 @@ const formatIfDate = (val) => {
     return val
 }
 
-const inputs = (data) => 
+const formatIfNull = (val) => val === null ? '' : val
+
+const inputs = (data, pks, method) => 
     Object.keys(data.tableData[0]).reduce((str, key) => str +
         `
         <div class="inputs">
@@ -16,7 +18,7 @@ const inputs = (data) =>
                 data.dependsOnData.find(depends => depends.name == key)
                 ?
                     `
-                    <select name="${key}">
+                    <select name="${key}" ${ method == 'PUT' && pks.find(pk => pk.name == key) ? 'disabled' : ''}>
                         <option ${data.tableData[0][key] == null ? 'selected' : ''} value="null"></option>
                         ${
                             data.dependsOnData.find(depends => depends.name == key).available.map(obj => {
@@ -28,7 +30,7 @@ const inputs = (data) =>
                     `
                 :
                     `
-                    <input type="text" name="${key}" value="${formatIfDate(data.tableData[0][key])}"></input>
+                    <input ${pks.find(pk => pk.name == key) ? 'disabled' : ''} type="text" name="${key}" value="${formatIfNull(formatIfDate(data.tableData[0][key]))}"></input>
                     `
             }
         </div>
@@ -42,11 +44,11 @@ const formData = (data) =>
     `
     , '').split(0, -1)
 
-module.exports.default = (route, data, method) => `
+module.exports.default = (route, data, pks, method) => `
     <div class="container">
         <form id="form">
             ${
-                inputs(data)
+                inputs(data, pks, method)
             }
             <div class="button-wrapper">
                 <a id="submit">Zapisz</a>
@@ -61,7 +63,7 @@ module.exports.default = (route, data, method) => `
             const data = {${formData(data)}}
             $.ajax({
                 url: '/${route}',
-                type: '${method.toUpperCase()}',
+                type: '${method}',
                 data: data
             }).done(function(data){
                 $('#alert-info').html('<p>' + data + '</p>')

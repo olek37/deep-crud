@@ -1,5 +1,12 @@
 const formatDate = (date) => ((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))) + '-' + ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate())) + '-' + date.getFullYear()
 
+const formatForLink = (val) => {
+    if(val && (typeof val == 'string') && val.includes('/')) {
+        val = val.replace(/\//g, '@')
+    }
+    return val
+}
+
 const formatIfDate = (val) => {
     if(val instanceof Date) {
         return formatDate(val)
@@ -7,9 +14,9 @@ const formatIfDate = (val) => {
     return val
 }
 
-const formatIfNull = (val) => val ? val : ''
+const formatIfNull = (val) => val === null ? '' : val
 
-const createLink = (route, obj) => '/' + route + '/' +  Object.keys(obj).reduce((str, key) => str + `${key}$${formatIfDate(obj[key])}&`, '')
+const createLink = (route, obj) => '/' + route + '/' +  Object.keys(obj).reduce((str, key) => str + `${key}$${formatForLink(formatIfDate(obj[key]))}&`, '')
 
 const createListElements = (name, elements) => elements.length > 0 ?
     elements.reduce((str_, obj) => str_ +

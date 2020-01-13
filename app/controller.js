@@ -58,6 +58,7 @@ module.exports.readOne = async (req, res, schema) => {
     const dependent = dependentByTable(table, schema)
     const dependsOn = dependsOnByTable(table)
     const data = await sql.readOneData(table, dependent, dependsOn, req.params.id)
+    console.log(data)
     res.send(build.viewOne(`${table.name}/${req.params.id}`, data, pks))
 }
 

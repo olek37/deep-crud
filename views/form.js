@@ -72,6 +72,15 @@ module.exports.default = (route, data, pks, method) => `
                         location.reload()
                     }, 500);
                 });
+            }).fail(function(data){
+                $('#alert-info').html('<p>Podano błędne dane</p>')
+                $('#alert-info').addClass('error')
+                $('#alert-info').fadeIn(500, () => {
+                    setTimeout(function(){
+                        location.reload()
+                    }, 500);
+                });
+                
             });
         });
     });

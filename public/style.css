@@ -191,7 +191,9 @@ a {
     margin: 0;
     text-align: center;
 }
-
+#alert-info.error {
+    background: #d64541;
+}
 
 .home-links {
     width: 50%;

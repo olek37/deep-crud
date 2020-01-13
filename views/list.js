@@ -18,7 +18,7 @@ const formatIfNull = (val) => val === null ? '' : val
 
 const createLink = (route, obj) => '/' + route + '/' +  Object.keys(obj).reduce((str, key) => str + `${key}$${formatForLink(formatIfDate(obj[key]))}&`, '')
 
-const createListElements = (name, elements) => elements.length > 0 ?
+const createListElements = (name, elements) => elements && elements.length > 0 ?
     elements.reduce((str_, obj) => str_ +
     `  
     <a class="list-element" href="${createLink(name, obj)}">
@@ -31,7 +31,7 @@ const createListElements = (name, elements) => elements.length > 0 ?
     , '') : ''
 
 const createListHeader = (list) => {
-    if(list.elements.length > 0) {
+    if(list.elements && list.elements.length > 0) {
         return Object.keys(list.elements[0]).reduce((str,key) => str + `<p>${key}</p>`, '')    
     }
     return ''

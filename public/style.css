@@ -161,6 +161,16 @@ a {
     font-size: 1rem;
 }
 
+.inputs input:disabled, .inputs select:disabled {
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.5),
+        rgba(255, 255, 255, 0.5) 6px,
+        rgba(255, 255, 255, 0.0) 6px,
+        rgba(255, 255, 255, 0.0) 12px
+  );
+}
+
 .inputs select {
     width: calc(80% + 1rem);
 }
@@ -181,7 +191,9 @@ a {
     margin: 0;
     text-align: center;
 }
-
+#alert-info.error {
+    background: #d64541;
+}
 
 .home-links {
     width: 50%;

@@ -54,10 +54,12 @@ module.exports.read = async (req, res, schema) => {
 
 module.exports.readOne = async (req, res, schema) => {
     const table = tableByRequest(req, schema)
+    const pks = table.fields.filter(field => field.pk)
     const dependent = dependentByTable(table, schema)
     const dependsOn = dependsOnByTable(table)
     const data = await sql.readOneData(table, dependent, dependsOn, req.params.id)
-    res.send(build.viewOne(`${table.name}/${req.params.id}`, data))
+    console.log(data)
+    res.send(build.viewOne(`${table.name}/${req.params.id}`, data, pks))
 }
 
 module.exports.create = async (req, res, schema) => {

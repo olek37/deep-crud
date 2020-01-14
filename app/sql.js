@@ -10,6 +10,7 @@ const processInputs = (val) => {
 const removeTrailingComma = (str) => str.slice(0, -1)
 
 const whereClauseByPrimaryKeys = (table, id) => {
+    id = id.replace(/@/g, '/')
     const singlePk = table.fields.find(field => field.pk && !field.references)
     if(singlePk) {
         const segment = id.split('&').find(segment => segment.split('$')[0] == singlePk.name)
@@ -51,7 +52,7 @@ module.exports.readOneData = async (table, dependent, dependsOn, id) => {
                 `
                 SELECT *
                 FROM ${dependant.table.name}
-                WHERE ${dependant.field.name} = '${id.split('&')[0].split('$')[1]}'
+                WHERE ${dependant.field.name} = '${id.replace(/@/g, '/').split('&')[0].split('$')[1]}'
                 `
                 )
         }
